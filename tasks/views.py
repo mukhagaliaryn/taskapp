@@ -1,9 +1,20 @@
 from django.shortcuts import render
+from .models import Session, Weekend, Task
 
 
 def index(request):
-    return render(request, 'tasks/index.html', {})
+    sessions = Session.objects.all()
+
+    context = {
+        'sessions': sessions
+    }
+    return render(request, 'tasks/index.html', context)
 
 
 def create_task(request):
-    return render(request, 'tasks/task.html', {})
+    sessions = Session.objects.all()
+
+    context = {
+        'sessions': sessions
+    }
+    return render(request, 'tasks/task.html', context)
