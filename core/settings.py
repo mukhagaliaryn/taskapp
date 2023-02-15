@@ -22,7 +22,11 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'crispy_forms',
+    'crispy_tailwind',
+
     'tasks.apps.TasksConfig',
+    'accounts.apps.AccountsConfig',
 ]
 
 X_FRAME_OPTIONS = 'SAMEORIGIN'
@@ -100,6 +104,11 @@ STATICFILES_DIRS = [os.path.join(BASE_DIR, 'templates/static')]
 
 MEDIA_URL = 'media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+CRISPY_ALLOWED_TEMPLATE_PACKS = "tailwind"
+CRISPY_TEMPLATE_PACK = "tailwind"
+LOGIN_REDIRECT_URL = 'index'
+LOGIN_URL = 'login'
 
 
 # Default primary key field type
