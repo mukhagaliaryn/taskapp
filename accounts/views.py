@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 from .forms import UserRegisterForm
 from django.contrib.auth.decorators import login_required
+from tasks.models import Session
 
 
 def register(request):
@@ -19,4 +20,11 @@ def register(request):
 
 @login_required
 def profile(request):
-    return render(request, 'accounts/profile.html')
+    sessions = Session.objects.all()
+    tasks = request.user.task_set.all()
+    context = {
+        'sessions': sessions,
+        'tasks': tasks,
+        'count': tasks.count()
+    }
+    return render(request, 'accounts/profile.html', context)

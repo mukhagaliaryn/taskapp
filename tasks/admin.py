@@ -8,12 +8,12 @@ class SessionAdmin(admin.ModelAdmin):
 
 class TaskAdminTable(admin.TabularInline):
     model = Task
-    list_display = ('title', 'weekend', 'user', )
+    list_display = ('title', 'weekend', 'user', 'is_send',)
     extra = 1
 
 
 class WeekendAdmin(admin.ModelAdmin):
-    list_display = ('title', 'session', )
+    list_display = ('title', 'session', 'is_open',)
     inlines = [
         TaskAdminTable,
     ]

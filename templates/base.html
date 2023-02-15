@@ -58,11 +58,19 @@
                 <div class="flex items-center">
                     {% if request.user.is_authenticated %}
                         <div class="flex items-center ml-3">
+                            {% if request.user.profile.position == 'STUDENT' %}
                             <div class="mr-4 hidden md:block">
                                 <a href="{% url 'create_task' %}" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                                     Тапсырма жүктеу
                                 </a>
                             </div>
+                            {% else %}
+                                <div class="mr-4 hidden md:block">
+                                    <a href="/admin/" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                                        Администрация
+                                    </a>
+                                </div>
+                            {% endif %}
 
                             <div>
                                 <button type="button"
@@ -91,11 +99,19 @@
                                             class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white"
                                             role="menuitem">Профиль</a>
                                     </li>
-                                    <li>
-                                        <a href="#"
-                                            class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white"
-                                            role="menuitem">Тапсырма жүктеу</a>
-                                    </li>
+                                    {% if request.user.profile.position == 'STUDENT' %}
+                                        <li>
+                                            <a href="{% url 'create_task' %}"
+                                                class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white"
+                                                role="menuitem">Тапсырма жүктеу</a>
+                                        </li>
+                                    {% else %}
+                                        <li>
+                                            <a href="/admin/"
+                                                class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white"
+                                                role="menuitem">Администрация</a>
+                                        </li>
+                                    {% endif %}
                                     <li>
                                         <a href="{% url 'logout' %}"
                                             class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white"
@@ -157,7 +173,7 @@
                         <ul id="dropdown-example{{ session.id }}" class="hidden py-2 space-y-2">
                             {% for weekend in session.weekend_set.all %}
                                 <li>
-                                    <a href="#" class="flex items-center w-full p-2 text-base font-normal text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">
+                                    <a href="{% url 'weekend_detail' weekend.id %}" class="flex items-center w-full p-2 text-base font-normal text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">
                                         {{ weekend.title }}
                                     </a>
                                 </li>

@@ -11,13 +11,11 @@
             <h5 class="mb-1 text-3xl font-bold text-gray-900 dark:text-white">{{ user.first_name }} {{ user.last_name }}</h5>
             <h5 class="font-medium text-gray-900">{{ user.username }}</h5>
             <span class="text-sm text-gray-500 dark:text-gray-400">{{ user.profile.get_position_display }}</span>
-            {% if request.user.profile.position == 'STUDENT' %}
-                <h5 class="font-medium text-gray-500">Тапсырмалары: {{ count }}</h5>
-            {% endif %}
+            <h5 class="font-medium text-gray-900">Тапсырмалары: {{ count }}</h5>
         </div>
     </div>
 
-    {% if request.user.profile.position == 'STUDENT' %}
+    {% if request.user.profile.position == 'ADMIN' %}
         <div class="relative my-10 overflow-x-auto shadow-md sm:rounded-lg">
             <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
                 <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
@@ -27,12 +25,6 @@
                         </th>
                         <th scope="col" class="px-6 py-3">
                             Жіберуші
-                        </th>
-                        <th scope="col" class="px-6 py-3">
-                            Аралық
-                        </th>
-                        <th scope="col" class="px-6 py-3">
-                            Апта
                         </th>
                         <th scope="col" class="px-6 py-3">
                             Статус
@@ -52,14 +44,8 @@
                                 {{ task.title }}
                             </th>
                             <td class="px-6 py-4">
-                                {{ request.user.first_name }}
-                                {{ request.user.last_name }}
-                            </td>
-                            <td class="px-6 py-4">
-                                {{ task.weekend.session.title }}
-                            </td>
-                            <td class="px-6 py-4">
-                                {{ task.weekend.title }}
+                                {{ user.first_name }}
+                                {{ user.last_name }}
                             </td>
                             <td class="px-6 py-4">
                                 {% if task.is_send %}
