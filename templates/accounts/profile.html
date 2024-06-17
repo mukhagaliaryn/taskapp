@@ -29,16 +29,13 @@
                             Жоба
                         </th>
                         <th scope="col" class="px-6 py-3">
-                            Жіберуші
+                            Жіберілген уақыты
                         </th>
                         <th scope="col" class="px-6 py-3">
                             Статус
                         </th>
                         <th scope="col" class="px-6 py-3">
-                            Уақыты
-                        </th>
-                        <th scope="col" class="px-6 py-3">
-                            Файл
+                            Жұмыс құжаты
                         </th>
                     </tr>
                 </thead>
@@ -52,8 +49,7 @@
                                 {{ obj.task.title }}
                             </td>
                             <td class="px-6 py-4">
-                                {{ request.user.first_name }}
-                                {{ request.user.last_name }}
+                                {{ obj.date_created }}
                             </td>
                             <td class="px-6 py-4">
                                 {% if obj.is_send %}
@@ -61,9 +57,6 @@
                                 {% else %}
                                     <p class="font-semibold text-red-500">Қате кетті</p>
                                 {% endif %}
-                            </td>
-                            <td class="px-6 py-4">
-                                {{ obj.date_created }}
                             </td>
                             <td class="px-6 py-4">
                                 <a href="" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Жүктеу</a>

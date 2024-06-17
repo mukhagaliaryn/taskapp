@@ -25,6 +25,15 @@ def index(request):
 
 
 @login_required
+def users(request):
+    all_users = User.objects.all()
+    context = {
+        'users': all_users
+    }
+    return render(request, 'tasks/users.html', context)
+
+
+@login_required
 def user_detail(request, username):
     user = get_object_or_404(User, username=username)
     solutions = user.solution_set.all()
@@ -46,6 +55,18 @@ def projects(request):
 
 
 @login_required
+def project_detail(request, id):
+    project = get_object_or_404(Project, id=id)
+    tasks = project.task_set.all()
+
+    context = {
+        'project': project,
+        'tasks': tasks
+    }
+    return render(request, 'tasks/project.html', context)
+
+
+@login_required
 def solutions(request):
     all_solutions = Solution.objects.all()
     context = {
@@ -54,14 +75,6 @@ def solutions(request):
     return render(request, 'tasks/solutions.html', context)
 
 
-@login_required
-def project_detail(request, id):
-    project = get_object_or_404(Project, id=id)
-
-    context = {
-        'project': project
-    }
-    return render(request, 'tasks/solutions.html', context)
 # @login_required
 # def task_detail(request, pk):
 #     weekend = get_object_or_404(Task, pk=pk)
