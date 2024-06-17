@@ -1,77 +1,97 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from .models import Session, Weekend, Task
+from .models import Project, Task, Solution
 from django.contrib.auth.decorators import login_required
 from accounts.models import User
-from .forms import TaskForm
 
 
 @login_required
 def index(request):
-    sessions = Session.objects.all()
-    users = User.objects.filter(profile__position='STUDENT')
-    context = {
-        'sessions': sessions,
-        'users': users
-    }
+    context = {}
+    if request.user.profile.position == 'STAFF':
+        projects = Project.objects.all()[:5]
+        solutions = Solution.objects.filter(user=request.user)[:5]
+        context['projects'] = projects
+        context['solutions'] = solutions
+
+    elif request.user.profile.position == 'ADMIN':
+        users = User.objects.exclude(is_superuser=True)[:5]
+        projects = Project.objects.all()[:5]
+        solutions = Solution.objects.all()[:5]
+
+        context['users'] = users
+        context['projects'] = projects
+        context['solutions'] = solutions
     return render(request, 'tasks/index.html', context)
 
 
 @login_required
 def user_detail(request, username):
-    sessions = Session.objects.all()
     user = get_object_or_404(User, username=username)
-    tasks = user.task_set.all()
+    solutions = user.solution_set.all()
     context = {
-        'sessions': sessions,
         'user': user,
-        'tasks': tasks,
-        'count': tasks.count()
+        'solutions': solutions,
+        'count': solutions.count()
     }
     return render(request, 'tasks/profile.html', context)
 
 
 @login_required
-def weekend_detail(request, pk):
-    sessions = Session.objects.all()
-    weekend = get_object_or_404(Weekend, pk=pk)
-
-    if request.user.profile.position == 'STUDENT':
-        tasks = Task.objects.filter(user=request.user, weekend=weekend)
-        form = TaskForm()
-
-        if request.method == 'POST':
-            form = TaskForm(request.POST, request.FILES)
-            if form.is_valid():
-                form = form.save(commit=False)
-                form.user = request.user
-                form.weekend = weekend
-                form.save()
-                return redirect('weekend_detail', weekend.pk)
-
-        context = {
-            'sessions': sessions,
-            'weekend': weekend,
-            'form': form,
-            'tasks': tasks
-        }
-        return render(request, 'tasks/task.html', context)
-
-    else:
-        tasks = Task.objects.filter(weekend=weekend)
-        context = {
-            'sessions': sessions,
-            'weekend': weekend,
-            'tasks': tasks,
-        }
-        return render(request, 'tasks/task.html', context)
-
+def projects(request):
+    all_projects = Project.objects.all()
+    context = {
+        'projects': all_projects
+    }
+    return render(request, 'tasks/projects.html', context)
 
 
 @login_required
-def create_task(request):
-    sessions = Session.objects.all()
+def solutions(request):
+    all_solutions = Solution.objects.all()
+    context = {
+        'solutions': all_solutions
+    }
+    return render(request, 'tasks/solutions.html', context)
+
+
+@login_required
+def project_detail(request, id):
+    project = get_object_or_404(Project, id=id)
 
     context = {
-        'sessions': sessions
+        'project': project
     }
-    return render(request, 'tasks/task.html', context)
+    return render(request, 'tasks/solutions.html', context)
+# @login_required
+# def task_detail(request, pk):
+#     weekend = get_object_or_404(Task, pk=pk)
+#
+#     if request.user.profile.position == 'STUDENT':
+#         tasks = Task.objects.filter(user=request.user, weekend=weekend)
+#         form = TaskForm()
+#
+#         if request.method == 'POST':
+#             form = TaskForm(request.POST, request.FILES)
+#             if form.is_valid():
+#                 form = form.save(commit=False)
+#                 form.user = request.user
+#                 form.weekend = weekend
+#                 form.save()
+#                 return redirect('weekend_detail', weekend.pk)
+#
+#         context = {
+#             'sessions': sessions,
+#             'weekend': weekend,
+#             'form': form,
+#             'tasks': tasks
+#         }
+#         return render(request, 'tasks/task.html', context)
+#
+#     else:
+#         tasks = Task.objects.filter(weekend=weekend)
+#         context = {
+#             'sessions': sessions,
+#             'weekend': weekend,
+#             'tasks': tasks,
+#         }
+#         return render(request, 'tasks/task.html', context)

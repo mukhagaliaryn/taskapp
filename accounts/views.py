@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 from .forms import UserRegisterForm
 from django.contrib.auth.decorators import login_required
-from tasks.models import Session
+from tasks.models import Project
 
 
 def register(request):
@@ -20,11 +20,9 @@ def register(request):
 
 @login_required
 def profile(request):
-    sessions = Session.objects.all()
-    tasks = request.user.task_set.all()
+    solutions = request.user.solution_set.all()
     context = {
-        'sessions': sessions,
-        'tasks': tasks,
-        'count': tasks.count()
+        'solutions': solutions,
+        'count': solutions.count()
     }
     return render(request, 'accounts/profile.html', context)

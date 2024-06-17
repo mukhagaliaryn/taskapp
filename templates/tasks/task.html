@@ -58,7 +58,7 @@
     </div>
    
     {% if weekend.is_open %}
-        {% if request.user.profile.position == 'STUDENT' %}
+        {% if request.user.profile.position == 'STAFF' %}
         <div
             class="w-full max-w-xl p-4 mx-auto bg-white border border-gray-200 rounded-lg shadow sm:p-6 md:p-8 dark:bg-gray-800 dark:border-gray-700">
             <form class="space-y-6" method="POST" enctype="multipart/form-data">

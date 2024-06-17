@@ -1,23 +1,23 @@
 from django.contrib import admin
-from .models import Session, Weekend, Task
+from .models import Project, Task, Solution
 
 
-class SessionAdmin(admin.ModelAdmin):
-    list_display = ('title', )
+class ProjectAdmin(admin.ModelAdmin):
+    list_display = ('title', 'status', 'date_created', )
 
 
-class TaskAdminTable(admin.TabularInline):
-    model = Task
-    list_display = ('title', 'weekend', 'user', 'is_send',)
+class SolutionAdminTable(admin.TabularInline):
+    model = Solution
+    list_display = ('title', 'task', 'user', 'is_send', 'date_created', )
     extra = 1
 
 
-class WeekendAdmin(admin.ModelAdmin):
-    list_display = ('title', 'session', 'is_open',)
+class TaskAdmin(admin.ModelAdmin):
+    list_display = ('title', 'project', 'status', 'date_created', )
     inlines = [
-        TaskAdminTable,
+        SolutionAdminTable,
     ]
 
 
-admin.site.register(Session, SessionAdmin)
-admin.site.register(Weekend, WeekendAdmin)
+admin.site.register(Project, ProjectAdmin)
+admin.site.register(Task, TaskAdmin)
