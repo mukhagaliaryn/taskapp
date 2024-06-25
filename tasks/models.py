@@ -50,7 +50,7 @@ class Solution(models.Model):
     date_created = models.DateTimeField(verbose_name='Дата добавление', auto_now_add=True)
 
     def __str__(self):
-        return self.title
+        return self.task.title
 
     class Meta:
         verbose_name = 'Решение'
