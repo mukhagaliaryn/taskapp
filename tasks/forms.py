@@ -1,9 +1,9 @@
 from django import forms
-from .models import Task
+from .models import Solution
 
 
-class TaskForm(forms.ModelForm):
+class SolutionForm(forms.ModelForm):
 
     class Meta:
-        model = Task
-        fields = ('title', 'file', 'description', 'is_send', )
+        model = Solution
+        fields = ('task', 'description', 'file', 'is_send', )

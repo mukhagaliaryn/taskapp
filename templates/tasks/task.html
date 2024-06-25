@@ -1,86 +1,28 @@
 {% extends 'base.html' %}
 {% load crispy_forms_tags %}
-{% block title %}Тапсырма жүктеу{% endblock title %}
+{% block title %}Жұмысты жіберу{% endblock title %}
 
 {% block content %}
 
 <div class="pt-14">
     <h1 class="text-3xl font-bold mb-10 text-gray-900 dark:text-white">{{ weekend.session.title }} {{ weekend.title }}</h5>
     
-    <div class="relative mb-10 overflow-x-auto shadow-md sm:rounded-lg">
-        <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-            <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-                <tr>
-                    <th scope="col" class="px-6 py-3">
-                        Тапсырма тақырып
-                    </th>
-                    <th scope="col" class="px-6 py-3">
-                        Жіберуші
-                    </th>
-                    <th scope="col" class="px-6 py-3">
-                        Статус
-                    </th>
-                    <th scope="col" class="px-6 py-3">
-                        Уақыты
-                    </th>
-                    <th scope="col" class="px-6 py-3">
-                        Файл
-                    </th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for task in tasks %}
-                    <tr class="bg-white border-b dark:bg-gray-900 dark:border-gray-700">
-                        <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                            {{ task.title }}
-                        </th>
-                        <td class="px-6 py-4">
-                            {{ task.user.first_name }}
-                            {{ task.user.last_name }}
-                        </td>
-                        <td class="px-6 py-4">
-                            {% if task.is_send %}
-                                <p class="font-semibold text-green-500">Жіберілді</p>
-                            {% else %}
-                                <p class="font-semibold text-red-500">Қате кетті</p>
-                            {% endif %}
-                        </td>
-                        <td class="px-6 py-4">
-                            {{ task.date_created }}
-                        </td>
-                        <td class="px-6 py-4">
-                            <a href="{{ task.file.url }}" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Жүктеу</a>
-                        </td>
-                    </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+    {% if request.user.profile.position == 'STAFF' %}
+    <div
+        class="w-full max-w-xl p-4 mx-auto bg-white border border-gray-200 rounded-lg shadow sm:p-6 md:p-8 dark:bg-gray-800 dark:border-gray-700">
+        <form class="space-y-6" method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+
+            <h5 class="text-xl font-bold text-gray-900 text-center dark:text-white">Тапсырмаларды жүктеу формасы</h5>
+            <div>
+                {{ form|crispy }}
+            </div>
+            <button type="submit"
+                class="w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                Тапсырманы жіберу
+            </button>
+        </form>
     </div>
-   
-    {% if weekend.is_open %}
-        {% if request.user.profile.position == 'STAFF' %}
-        <div
-            class="w-full max-w-xl p-4 mx-auto bg-white border border-gray-200 rounded-lg shadow sm:p-6 md:p-8 dark:bg-gray-800 dark:border-gray-700">
-            <form class="space-y-6" method="POST" enctype="multipart/form-data">
-                {% csrf_token %}
-
-                <h5 class="text-xl font-bold text-gray-900 text-center dark:text-white">Тапсырмаларды жүктеу формасы</h5>
-                <div>
-                    {{ form|crispy }}
-                </div>
-                <button type="submit"
-                    class="w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                    Тапсырманы жіберу
-                </button>
-            </form>
-        </div>
-        {% endif %}
-    {% else %}
-
-        <div class="w-full text-center">
-            <h1 class="text-2xl font-bold mb-2 text-gray-800">Апта жабық</h1>
-            <span class="text-sm text-gray-500">Апта жабылып қалды. Өкінішке орай тапсырмаларды жібере алмайсыз!</span>
-        </div>
     {% endif %}
 </div>
 

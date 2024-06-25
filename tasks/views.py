@@ -1,4 +1,6 @@
 from django.shortcuts import render, get_object_or_404, redirect
+
+from .forms import SolutionForm
 from .models import Project, Task, Solution
 from django.contrib.auth.decorators import login_required
 from accounts.models import User
@@ -75,36 +77,8 @@ def solutions(request):
     return render(request, 'tasks/solutions.html', context)
 
 
-# @login_required
-# def task_detail(request, pk):
-#     weekend = get_object_or_404(Task, pk=pk)
-#
-#     if request.user.profile.position == 'STUDENT':
-#         tasks = Task.objects.filter(user=request.user, weekend=weekend)
-#         form = TaskForm()
-#
-#         if request.method == 'POST':
-#             form = TaskForm(request.POST, request.FILES)
-#             if form.is_valid():
-#                 form = form.save(commit=False)
-#                 form.user = request.user
-#                 form.weekend = weekend
-#                 form.save()
-#                 return redirect('weekend_detail', weekend.pk)
-#
-#         context = {
-#             'sessions': sessions,
-#             'weekend': weekend,
-#             'form': form,
-#             'tasks': tasks
-#         }
-#         return render(request, 'tasks/task.html', context)
-#
-#     else:
-#         tasks = Task.objects.filter(weekend=weekend)
-#         context = {
-#             'sessions': sessions,
-#             'weekend': weekend,
-#             'tasks': tasks,
-#         }
-#         return render(request, 'tasks/task.html', context)
+@login_required
+def task_send(request):
+    form = SolutionForm()
+    context = {'form': form}
+    return render(request, 'tasks/task.html', context)
